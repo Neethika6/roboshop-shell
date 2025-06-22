@@ -20,7 +20,7 @@ do
 
 aws route53 change-resource-record-sets \
   --hosted-zone-id $ZONE_ID \
-  --change-batch 
+  --change-batch '
 {
   "Comment": "Creating or updating A record for example.com",
   "Changes": [
@@ -38,7 +38,7 @@ aws route53 change-resource-record-sets \
       }
     }
   ]
-
+}'
 
 done
 
