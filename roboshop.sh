@@ -11,8 +11,34 @@ do
     if [ $instance != "frontend" ]
     then
         IP=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query "Reservations[0].Instances[0].PrivateIpAddress" --output text)
+        ROUTE_ID="'$instance'.'$ZONE_NAME'"
     else
         IP=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query "Reservations[0].Instances[0].PublicIpAddress" --output text)
+        ROUTE_ID=$ZONE_ID
     fi
     echo "$instance IP address: $IP"
+
+aws route53 change-resource-record-sets \
+  --hosted-zone-id $ZONE_ID \
+  --change-batch 
+{
+  "Comment": "Creating or updating A record for example.com",
+  "Changes": [
+    {
+      "Action": "UPSERT",
+      "ResourceRecordSet": {
+        "Name": "$ROUTE_ID",
+        "Type": "A",
+        "TTL": 60,
+        "ResourceRecords": [
+          {
+            "Value": "$IP"
+          }
+        ]
+      }
+    }
+  ]
+}
+
 done
+
