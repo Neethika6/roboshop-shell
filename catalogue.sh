@@ -2,13 +2,11 @@
 
 USER_ID=$(id -u)
 SCRIPT_DIR=$PWD
-LOG_DIR=/var/log/roboshop
-mkidr $LOG_DIR
+LOG_DIR="/var/log/roboshop"
 SCRIPT_NAME=$(echo $0 | cut -d "." -f1)
 echo $SCRIPT_NAME
-LOG_FILE=$LOG_DIR/$SCRIPT_NAME.log
-
-
+LOG_FILE="$LOG_DIR/$SCRIPT_NAME.log"
+mkidr -p $LOG_DIR
 
 echo "SCRIPT START TIME IS:$(date)"
 
