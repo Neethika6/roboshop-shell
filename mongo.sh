@@ -10,7 +10,7 @@ then
 else
     echo "ERROR::PLEASE SIWTCH TO ROOT"
     exit 1
-done
+fi
 
 VALIDATE()
 {
