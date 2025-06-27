@@ -2,12 +2,13 @@
 
 USER_ID=$(id -u)
 SCRIPT_DIR=$PWD
-LOG_DIR="/var/log/roboshop"
+LOG_DIR=/var/log/roboshop
+mkidr $LOG_DIR
 SCRIPT_NAME=$(echo $0 | cut -d "." -f1)
 echo $SCRIPT_NAME
 LOG_FILE=$LOG_DIR/$SCRIPT_NAME.log
 
-mkidr $LOG_DIR
+
 
 echo "SCRIPT START TIME IS:$(date)"
 
@@ -25,7 +26,7 @@ VALIDATE()
     then
         echo "$2 is SUCCESS" | tee -a $LOG_FILE
     else
-        echo "$2 is FAILED" | tea -a $LOG_FILE
+        echo "$2 is FAILED" | tee -a $LOG_FILE
         exit 1
     fi
 }
