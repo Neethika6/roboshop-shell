@@ -1,8 +1,8 @@
 #!/bin/bash
 
 USER=$(id -u)
-PATH=$PWD
-echo $PATH
+# PATH=$PWD
+# echo $PATH
 
 if [ $USER == 0 ]
 then
@@ -22,5 +22,5 @@ VALIDATE()
     fi
 }
 
-cp $PATH/mongo.repo /etc/yum.repos.d/mongo.repo
+cp mongo.repo /etc/yum.repos.d/mongo.repo
 VALIDATE $? "Copying mongodb repo to the repositories path"
