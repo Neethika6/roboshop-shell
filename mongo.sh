@@ -31,7 +31,7 @@ systemctl start mongod
 VALIDATE $? "Starting mongodb"
 
 sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mongod.conf
-VALIDATE "Updating the IP of mongodb"
+VALIDATE $? "Updating the IP of mongodb"
 
 systemctl restart mongod
 VALIDATE $? "Restarting mongodb"
