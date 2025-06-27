@@ -1,6 +1,7 @@
 #!/bin/bash
 
 USER_ID=$(id -u)
+SCRIPT_DIR=$PWD
 
 if [ $USER_ID == 0 ]
 then
@@ -48,7 +49,7 @@ npm install
 VALIDATE $? "Installing npm package"
 
 echo "Copying catalogue.service file"
-cp catalogue.service /etc/systemd/system/catalogue.service
+cp $SCRIPT_DIR/catalogue.service /etc/systemd/system/catalogue.service
 VALIDATE $? "Copying catalogue.service"
 
 
@@ -57,7 +58,7 @@ systemctl enable catalogue
 systemctl start catalogue
 
 
-cp mongo.repo /etc/yum.repos.d/mongo.repo
+cp $SCRIPT_DIR/mongo.repo /etc/yum.repos.d/mongo.repo
 
 dnf install mongodb-mongosh -y
 VALIDATE $? "Installing mongodb client"
