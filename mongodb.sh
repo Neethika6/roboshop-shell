@@ -1,5 +1,4 @@
 #!/bin/bash
-set -x
 ID=$(id -u)
 PATH=$PWD
 echo $PATH
