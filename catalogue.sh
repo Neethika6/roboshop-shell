@@ -7,6 +7,8 @@ SCRIPT_NAME=$(echo $0 | cut -d "." -f1)
 echo $SCRIPT_NAME
 LOG_FILE=$LOG_DIR/$SCRIPT_NAME.log
 
+mkidr $LOG_DIR
+
 echo "SCRIPT START TIME IS:$(date)"
 
 if [ $USER_ID == 0 ]
