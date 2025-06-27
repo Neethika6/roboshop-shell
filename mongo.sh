@@ -1,5 +1,10 @@
 #!/bin/bash
 USER=$(id -u)
+LOG_FOLDER="/var/log/roboshop"
+SCRIPT_NAME=$(echo $0 | cut -d "." -f1)
+echo $SCRIPT_NAME
+LOG_FILE=$LOG_FOLDER/$SCRIPT_NAME.log
+echo $LOG_FILE
 
 if [ $USER == 0 ]
 then
