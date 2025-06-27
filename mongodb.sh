@@ -10,4 +10,11 @@ else
     exit 1
 fi
 
-dnf list installed mongodb
+dnf module installed mongodb
+
+if [ $? == 0 ]
+then
+    echo "MONGODB is already installed"
+else
+    echo "MONGODB is not Installed.Please proceed with Installation"
+fi
