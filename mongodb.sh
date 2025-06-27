@@ -3,26 +3,21 @@ set -x
 ID=$(id -u)
 PATH=$PWD
 echo $PATH
-LOGS_FOLDER=/var/log/roboshop
-SCRIPT=$(echo $0 | cut -d "." -f1)
-LOG_FILE="$LOGS_FILDER/$SCRIPT.log"
-mkdir -p $LOGS_FOLDER
 
 if [ $ID == 0 ]
 then
-    echo "You are in ROOT" | tee -a $LOG_FILE
+    echo "You are in ROOT" 
 else
-    echo "ERROR:Please switch to ROOT" | tee -a $LOG_FILE
-    exit 1
+    echo "ERROR:Please switch to ROOT" 
 fi
 
 VALIDATE()
 {
     if [ $1 -eq 0 ]
     then
-        echo "$2   SUCCESS" | tee -a $LOG_FILE
+        echo "$2   SUCCESS" 
     else
-        echo "$2 FAILED" | tee 0a $LOG_FILE
+        echo "$2 FAILED" 
     fi
 }
 
