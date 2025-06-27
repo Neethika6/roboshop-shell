@@ -24,14 +24,14 @@ VALIDATE $? "Copying mongodb repo to the repository directory"
 dnf install mongodb-org -y
 VALIDATE $? "Installing mongodb"
 
-systemctl enable mongodb
+systemctl enable mongod
 VALIDATE $? "Enabling mongodb"
 
-systemctl start mongodb
+systemctl start mongod
 VALIDATE $? "Starting mongodb"
 
 sed -i 's/0.0.0.0/127.0.0.1/g' /etc/mongo.conf
 VALIDATE "Updating the IP of mongodb"
 
-systemctl restart mongodb
+systemctl restart mongod
 VALDIATE $? "Restarting mongodb"
