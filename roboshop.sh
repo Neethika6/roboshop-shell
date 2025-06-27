@@ -12,9 +12,33 @@ do
   if [ $package != "frontend" ]
   then
     IP=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query 'Reservations[*].Instances[*].PrivateIpAddress' --output text)
+    RECORD_NAME="$package.$ZONE_NAME"
   else
     IP=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query 'Reservations[*].Instances[*].PublicIpAddress' --output text)
+    RECORD_NAME="$ZONE_NAME"
   fi
 echo "IP address of $package is $IP"
+aws route53 change-resource-record-sets \
+       --hosted-zone-id $ZONE_ID \
+       --change-batch '
+	{
+     "Comment": "Update A record",
+     "Changes": [
+       {
+         "Action": "UPSERT",
+         "ResourceRecordSet": {
+           "Name": "$RECORD_NAME",
+           "Type": "A",
+           "TTL": 60,
+           "ResourceRecords": [
+             {
+               "Value": $IP
+             },
+           ]
+         }
+       }
+     ]
+   }'
+
 done
 
