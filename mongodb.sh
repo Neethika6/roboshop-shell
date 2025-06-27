@@ -44,4 +44,3 @@ VALIDATE $? "Updating IP in MONGODB conf"
 
 systemctl restart mongod
 VALIDATE $? "RESTARTING MONGODB"
-
