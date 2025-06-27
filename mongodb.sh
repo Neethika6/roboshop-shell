@@ -18,7 +18,7 @@ fi
 
 VALIDATE()
 {
-    if [ $1 == 0 ]
+    if [ $1 -eq 0 ]
     then
         echo "$2   SUCCESS" | tee -a $LOG_FILE
     else
@@ -39,7 +39,7 @@ VALIDATE $? "Enabling MONGODB"
 systemctl start mongod
 VALIDATE $? "Starting MONGODB"
 
-sed -i "s/0.0.0.0/127.0.0.1/g' /etc/mongod.conf
+sed -i 's/0.0.0.0/127.0.0.1/g' /etc/mongod.conf
 VALIDATE $? "Updating IP in MONGODB conf"
 
 systemctl restart mongod
