@@ -18,6 +18,7 @@ VALIDATE()
     fi
 }
 
+ls
 cp mongo.repo /etc/yum.d.repos/mongo.repo
 VALIDATE $? "Copying mongodb repo to the repository directory"
 
