@@ -18,21 +18,20 @@ VALIDATE()
     fi
 }
 
-ls
 cp mongo.repo /etc/yum.repos.d/mongo.repo
 VALIDATE $? "Copying mongodb repo to the repository directory"
 
-dnf install mongodb-org -y
-VALIDATE $? "Installing mongodb"
+# dnf install mongodb-org -y
+# VALIDATE $? "Installing mongodb"
 
-systemctl enable mongodb
-VALIDATE $? "Enabling mongodb"
+# systemctl enable mongodb
+# VALIDATE $? "Enabling mongodb"
 
-systemctl start mongodb
-VALIDATE $? "Starting mongodb"
+# systemctl start mongodb
+# VALIDATE $? "Starting mongodb"
 
-sed -i 's/0.0.0.0/127.0.0.1/g' /etc/mongo.conf
-VALIDATE "Updating the IP of mongodb"
+# sed -i 's/0.0.0.0/127.0.0.1/g' /etc/mongo.conf
+# VALIDATE "Updating the IP of mongodb"
 
-systemctl restart mongodb
-VALDIATE $? "Restarting mongodb"
+# systemctl restart mongodb
+# VALDIATE $? "Restarting mongodb"
