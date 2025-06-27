@@ -19,26 +19,22 @@ do
   fi
 echo "IP address of $package is $IP"
 aws route53 change-resource-record-sets \
-       --hosted-zone-id $ZONE_ID \
-       --change-batch '
-	{
-     "Comment": "Update A record",
-     "Changes": [
-       {
-         "Action": "UPSERT",
-         "ResourceRecordSet": {
-           "Name": "$RECORD_NAME",
-           "Type": "A",
-           "TTL": 60,
-           "ResourceRecords": [
-             {
-               "Value": $IP
-             }
-           ]
-         }
-       }
-     ]
-   }'
+    --hosted-zone-id $ZONE_ID \
+    --change-batch '
+    {
+        "Comment": "Creating or Updating a record"
+        ,"Changes": [{
+        "Action"              : "UPSERT"
+        ,"ResourceRecordSet"  : {
+            "Name"              : "'$RECORD_NAME'"
+            ,"Type"             : "A"
+            ,"TTL"              : 1
+            ,"ResourceRecords"  : [{
+                "Value"         : "'$IP'"
+            }]
+        }
+        }]
+    }'
 
 done
 
