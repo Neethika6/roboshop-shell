@@ -10,7 +10,7 @@ else
     exit 1
 fi
 
-dnf module installed mongodb
+dnf list installed mongodb
 
 if [ $? == 0 ]
 then
