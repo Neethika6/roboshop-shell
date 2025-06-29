@@ -33,4 +33,64 @@ VALIDATE()
 }
 
 #catalogue setup
+echo "Disable the existing default NODEJS"
+dnf module disable nodejs -y &>>$LOG_FILE
+VALIDATE $? "Diabled Default NODEJS"
+
+echo "Enable the NODEJS version20"
+dnf module enable nodejs:20 -y &>>$LOG_FILE
+VALIDATE $? "Enabled NODEJS VERSION:20"
+
+echo "Installating NODEJS"
+dnf install nodejs -y &>>$LOG_FILE
+VALIDATE $? "Installed NODEJS"
+
+id roboshop
+if [ $? == 0 ]
+then
+    useradd --system --home /app --shell /sbin/nologin --comment "Roboshop User" roboshop
+    VALIDATE $? "Creating system user"
+else
+    echo "Roboshop user is already present" 
+fi
+
+mkdir -p /app
+cd /app
+curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip
+unzip /tmp/catalogue.zip
+VALIDATE $? "Copying and unzipping the catalogue file"
+
+npm install &>>$LOG_FILE
+VALIDATE $? "Installing the build package of nodejs"
+
+cp $SCRIPT_DIR/catalogue.service /etc/systemd/system/catalogue.service
+VALIDATE $? "Copying service file to the Systemd path"
+
+systemctl daemon-reload
+systemctl enable catalogue
+systemctl start catalogue
+VALIDATE $? "Started Catalogue"
+
+#Install mongodb client to load the data into mongodb"
+cp $SCRIPT_DIR/mongo.rep /etc/yum.repos.d/mongo.repo
+VALDIATE $? "Copying mongodb repo"
+
+dnf install mongodb-mongosh -y &>>$LOG_FILE
+VALIDATE $? "Installed MONGODB Client"
+
+STATUS=$(mongosh --host mongodb.devopshyn.fun --eval 'db.getMongo().getDBNames().indexOf("catalogue")')
+if [ $STATUS -le 0 ]
+then
+    mongosh --host mongodb.devopshyn.fun </app/db/master-data.js &>>$LOG_FILE
+    VALIDATE $? "Data loaded into MONGODB"
+else
+    echo "Data is already in the DB"
+fi
+
+END_TIME=$(date +%s)
+echo "Script Completed at:$(date)"
+TOTAL_TIME=$(($END_TIME - $START_TIME))
+echo "Total time taken: $TOTAL_TIME seconds"
+
+
 
