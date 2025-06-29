@@ -49,7 +49,7 @@ VALIDATE $? "Starting NGINX"
 rm -rf /usr/share/nginx/html/*
 VALIDATE $? "Removing default file in html folder"
 
-curl -o /tmp/frontend.zip https://roboshop-artifacts.s3.amazonaws.com/frontend-v3.zip &>>$LOG_FILE
+curl -o /tmp/frontend.zip https://roboshop-artifacts.s3.amazonaws.com/frontend-v3.zip 
 cd /usr/share/nginx/html
 unzip /tmp/frontend.zip
 VALIDATE $? "Unzipping files is done"

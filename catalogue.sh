@@ -57,7 +57,7 @@ fi
 mkdir -p /app
 cd /app
 rm -rf *
-curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip
+curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip &>>$LOG_FILE
 unzip /tmp/catalogue.zip
 VALIDATE $? "Copying and unzipping the catalogue file"
 
@@ -80,7 +80,7 @@ dnf install mongodb-mongosh -y &>>$LOG_FILE
 VALIDATE $? "Installed MONGODB Client"
 
 STATUS=$(mongosh --host mongodb.devopshyn.fun --eval 'db.getMongo().getDBNames().indexOf("catalogue")')
-if [ $STATUS <= 0 ]
+if [ $STATUS -le 0 ]
 then
     mongosh --host mongodb.devopshyn.fun </app/db/master-data.js &>>$LOG_FILE
     VALIDATE $? "Data loaded into MONGODB"
