@@ -40,17 +40,17 @@ VALIDATE $? "Disabling default nginx"
 dnf module enable nginx:1.24 -y &>>$LOG_FILE
 VALIDATE $? "Enabling nginx version:1.24"
 
-dnf isntall nginx -y &>>$LOG_FILE
+dnf install nginx -y &>>$LOG_FILE
 VALIDATE $? "Installing nginx"
 
-systemctl enable nginx
-systemctl start nginx
+systemctl enable nginx 
+systemctl start nginx 
 VALIDATE $? "Enabling and starting nginx"
 
 rm -rf /usr/share/nginx/html/* 
 curl -o /tmp/frontend.zip https://roboshop-artifacts.s3.amazonaws.com/frontend-v3.zip &>>$LOG_FILE
-cd /usr/share/nginx/html
-unzip /tmp/frontend.zip
+cd /usr/share/nginx/html 
+unzip /tmp/frontend.zip &>>$LOG_FILE
 VALIDATE $? "Unzipping frontend.zip"
 
 cp $SCRIPT_DIR/nginx.conf /etc/nginx/nginx.conf
