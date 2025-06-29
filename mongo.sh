@@ -10,7 +10,7 @@ SCRIPT_NAME="$(echo $0 | cut -d "." -f1)"
 LOG_FILE="$LOG_DIR/$SCRIPT_NAME.log"
 
 #Creates a dir if not present -p will not throw error if the dir is already present
-mkdir -p /var/logs/roboshop_logs
+mkdir -p /var/log/roboshop_logs
 
 #if the value is 0 then you are running with root
 if [ $USER_ID == 0 ]
