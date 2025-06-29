@@ -49,6 +49,7 @@ then
     VALIDATE $? "Creating System user"
 else
     echo "ROboshop user is already present"
+fi
 
 mkdir -p /app
 cd /app
