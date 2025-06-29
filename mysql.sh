@@ -35,7 +35,7 @@ VALIDATE()
 
 #mysql setup
 
-dnf install mysql-server -y &??$LOG_FILE
+dnf install mysql-server -y &>>$LOG_FILE
 VALIDATE $? "Install MYSQL"
 
 systemctl enable mysqld
