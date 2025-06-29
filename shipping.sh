@@ -37,7 +37,7 @@ VALIDATE()
 
 #Shipping setup
 
-dnf install maven -y
+dnf install maven -y &>>$LOG_FILE
 VALIDATE $? "Installing maven"
 
 id roboshop
@@ -52,11 +52,11 @@ fi
 mkdir -p /app
 cd /app
 rm -rf *
-curl -o /tmp/shipping.zip https://roboshop-artifacts.s3.amazonaws.com/shipping-v3.zip
+curl -o /tmp/shipping.zip https://roboshop-artifacts.s3.amazonaws.com/shipping-v3.zip &>>$LOG_FILE
 unzip /tmp/shipping.zip 
 VALIDATE $? "Unzipping the shipping package"
 
-mvn clean package
+mvn clean package &>>$LOG_FILE
 VALIDATE $? "Installing java build package"
 
 mv target/shipping-1.0.jar shipping.jar 
@@ -70,16 +70,16 @@ systemctl enable shipping
 systemctl start shipping
 VALDIATE $? "Enabling and starting shipping"
 
-dnf install mysql -y
+dnf install mysql -y &>>$LOG_FILE
 VALDIATE $? "Installing mysql client"
 
-mysql --host mysql.devopshyn.fun -uroot -p$ROOT_PASSWORD < /app/db/schema.sql
+mysql --host mysql.devopshyn.fun -uroot -p$ROOT_PASSWORD < /app/db/schema.sql &>>$LOG_FILE
 VALDIATE $? "Loading Schema"
 
-mysql --host mysql.devopshyn.fun -uroot -p$ROOT_PASSWORD < /app/db/app-user.sql
+mysql --host mysql.devopshyn.fun -uroot -p$ROOT_PASSWORD < /app/db/app-user.sql &>>$LOG_FILE
 VALIDATE $? "Loading App-user"
 
-mysql --host mysql.devopshyn.fun -uroot -p$ROOT_PASSWORD < /app/db/master-data.sql
+mysql --host mysql.devopshyn.fun -uroot -p$ROOT_PASSWORD < /app/db/master-data.sql &>>$LOG_FILE
 VALDIATE $? "Loading master data"
 
 systemctl restart shipping
