@@ -43,7 +43,7 @@ VALIDATE $? "Installing maven"
 id roboshop
 if [ $? -ne 0 ]
 then
-    useradd --system --home /app --shell /sbin/nlogin --comment "Roboshopuser" roboshop
+    useradd --system --home /app --shell /sbin/nologin --comment "Roboshopuser" roboshop
     VALIDATE $? "Roboshop User has been created"
 else
     echo "user is already present"
@@ -53,7 +53,7 @@ mkdir -p /app
 cd /app
 rm -rf *
 curl -o /tmp/shipping.zip https://roboshop-artifacts.s3.amazonaws.com/shipping-v3.zip &>>$LOG_FILE
-unzip /tmp/shipping.zip 
+unzip /tmp/shipping.zip &>>$LOG_FILE
 VALIDATE $? "Unzipping the shipping package"
 
 mvn clean package &>>$LOG_FILE
@@ -68,22 +68,22 @@ VALIDATE $? "Copying the systemd configuration"
 systemctl daemon-reload
 systemctl enable shipping
 systemctl start shipping
-VALDIATE $? "Enabling and starting shipping"
+VALIDATE $? "Enabling and starting shipping"
 
 dnf install mysql -y &>>$LOG_FILE
-VALDIATE $? "Installing mysql client"
+VALIDATE $? "Installing mysql client"
 
 mysql --host mysql.devopshyn.fun -uroot -p$ROOT_PASSWORD < /app/db/schema.sql &>>$LOG_FILE
-VALDIATE $? "Loading Schema"
+VALIDATE $? "Loading Schema"
 
 mysql --host mysql.devopshyn.fun -uroot -p$ROOT_PASSWORD < /app/db/app-user.sql &>>$LOG_FILE
 VALIDATE $? "Loading App-user"
 
 mysql --host mysql.devopshyn.fun -uroot -p$ROOT_PASSWORD < /app/db/master-data.sql &>>$LOG_FILE
-VALDIATE $? "Loading master data"
+VALIDATE$? "Loading master data"
 
 systemctl restart shipping
-VALDIATE $? "Shipping restart"
+VALIDATE $? "Shipping restart"
 
 END_TIME=$(date +%s)
 echo "Script Completed at:$(date)"
