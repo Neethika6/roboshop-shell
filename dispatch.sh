@@ -58,7 +58,7 @@ go get
 go build
 VALIDATE $? "Installing dependencies"
 
-cp $SCRIPT_DIR/dispatch.service /etc/systemd/system/dispatch.sh
+cp $SCRIPT_DIR/dispatch.service /etc/systemd/system/dispatch.service
 VALIDATE $? "Copying service file"
 
 
