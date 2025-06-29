@@ -4,7 +4,7 @@ START_TIME=$(date +%s)
 echo "Script Started at:$(date)"
 #Check if you are running with root or not
 USER_ID=$(id -u) #if the value is 0 then you are running with root 
-SCRIPT_PATH=$PWD
+SCRIPT_DIR=$PWD
 LOG_DIR="/var/log/roboshop_logs"
 SCRIPT_NAME="$(echo $0 | cut -d "." -f1)"
 LOG_FILE="$LOG_DIR/$SCRIPT_NAME.log"
