@@ -34,7 +34,7 @@ VALIDATE()
 
 #MONGODB SETUP
 echo "Copy MONGO.repo file to the repository directory"
-cp $SCRIP_DIR/mongo.repo /etc/yum.repos.d/mongo.repo
+cp $SCRIPT_DIR/mongo.repo /etc/yum.repos.d/mongo.repo
 VALIDATE $? "Copying the repository file"
 
 echo "Installing the MONGODB"
