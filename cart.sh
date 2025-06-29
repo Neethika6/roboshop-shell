@@ -33,13 +33,13 @@ VALIDATE()
 }
 
 #cart setup
-dnf module disable nodejs -y
+dnf module disable nodejs -y &>>$LOG_FILE
 VALIDATE $? "Disbaling default nodejs"
 
-dnf module enable nodejs:20 -y
+dnf module enable nodejs:20 -y &>>$LOG_FILE
 VALIDATE $? "Enabling nodejs version:20"
 
-dnf install nodejs -y
+dnf install nodejs -y &>>$LOG_FILE
 VALIDATE $? "Installing nodejs version:20"
 
 useradd --system --home /app --shell /sbin/nologin --comment "Roboshop user" roboshop
@@ -47,11 +47,11 @@ VALIDATE $? "Creating System user"
 
 mkdir -p /app
 cd /app
-curl -o /tmp/cart.zip /tmp/cart.zip https://roboshop-artifacts.s3.amazonaws.com/cart-v3.zip
+curl -o /tmp/cart.zip https://roboshop-artifacts.s3.amazonaws.com/cart-v3.zip &>>$LOG_FILE
 unzip /tmp/cart.zip
 VALIDATE $? "Unzipping of cart package"
 
-npm install
+npm install &>>$LOG_FILE
 VALIDATE $? "Installing npm package"
 
 cp $SCRIPT_DIR/cart.service /etc/systemd/system/cart.service
