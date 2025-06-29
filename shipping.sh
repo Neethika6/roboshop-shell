@@ -80,7 +80,7 @@ mysql --host mysql.devopshyn.fun -uroot -p$ROOT_PASSWORD < /app/db/app-user.sql 
 VALIDATE $? "Loading App-user"
 
 mysql --host mysql.devopshyn.fun -uroot -p$ROOT_PASSWORD < /app/db/master-data.sql &>>$LOG_FILE
-VALIDATE$? "Loading master data"
+VALIDATE $? "Loading master data"
 
 systemctl restart shipping
 VALIDATE $? "Shipping restart"
