@@ -11,6 +11,7 @@ LOG_FILE="$LOG_DIR/$SCRIPT_NAME.log"
 
 #Creates a dir if not present -p will not throw error if the dir is already present
 mkdir -p /var/log/roboshop_logs
+echo "Enter root passowrd"
 read -s ROOT_PASS
 
 #if the value is 0 then you are running with root
@@ -35,7 +36,7 @@ VALIDATE()
 
 #mysql setup
 
-dnf instal mysql-server -y
+dnf install mysql-server -y &??$LOG_FILE
 VALIDATE $? "Install MYSQL"
 
 systemctl enable mysqld
