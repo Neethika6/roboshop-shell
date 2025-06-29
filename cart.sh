@@ -53,6 +53,7 @@ fi
 
 mkdir -p /app
 cd /app
+rm -rf *
 curl -o /tmp/cart.zip https://roboshop-artifacts.s3.amazonaws.com/cart-v3.zip &>>$LOG_FILE
 unzip /tmp/cart.zip
 VALIDATE $? "Unzipping of cart package"
