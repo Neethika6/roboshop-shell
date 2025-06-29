@@ -7,13 +7,13 @@ LOG_FILE="$LOGS_PATH/$SCRIP_NAME.log"
 mkdir -p $LOGS_PATH
 SCRIP_PATH=$PWD
 
-echo "Script started at:$(date)"
+echo "Script started at:$(date)" | tee -a $LOG_FILE
 
 if [ $USER_ID == 0 ]
 then 
-    echo "YOU ARE IN ROOT"
+    echo "YOU ARE IN ROOT" | tee -a $LOG_FILE
 else
-    echo "ERROR:PLEASE SWITCH TO ROOT"
+    echo "ERROR:PLEASE SWITCH TO ROOT" |  tee
     exit 1
 fi
 

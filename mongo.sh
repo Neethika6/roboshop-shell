@@ -1,44 +1,64 @@
 #!/bin/bash
-USER=$(id -u)
-LOG_FOLDER="/var/log/roboshop"
-SCRIPT_NAME=$(echo $0 | cut -d "." -f1)
-echo $SCRIPT_NAME
-LOG_FILE=$LOG_FOLDER/$SCRIPT_NAME.log
-echo $LOG_FILE
-mkdir -p $LOG_FOLDER
-echo "Script started at:$(date)" | tee -a $LOG_FILE
 
-if [ $USER == 0 ]
+START_TIME=$(date +%s)
+echo "Script Started at:$(date)"
+#Check if you are running with root or not
+USER_ID=$(id -u) #if the value is 0 then you are running with root 
+SCRIPT_PATH=$PWD
+LOG_DIR="/var/log/roboshop_logs"
+SCRIPT_NAME="$(echo $0 | cut -d "." -f1)"
+LOG_FILE="$LOG_DIR/$SCRIPT_NAME.log"
+
+#Creates a dir if not present -p will not throw error if the dir is already present
+mkdir -p /var/logs/roboshop_logs
+
+#if the value is 0 then you are running with root
+if [ $USER_ID == 0 ]
 then
     echo "YOU ARE IN ROOT" | tee -a $LOG_FILE
 else
     echo "ERROR:PLEASE SWITCH TO ROOT" | tee -a $LOG_FILE
+    exit 1  #Script will not execute any lines if you are not in the ROOT
 fi
 
+#Function to check if the commands were executed correctly or not
 VALIDATE()
 {
     if [ $1 == 0 ]
-    then
-        echo "$2 is SUCCESS" | tee -a $LOG_FILE
+    then 
+        echo "$2...SUCCESS" | tee -a $LOG_FILE
     else
-        echo "$2 is FAILED" | tee -a $LOG_FILE
+        echo "$2...Failed" | tee -a $LOG_FILE
     fi
 }
 
-cp mongo.repo /etc/yum.repos.d/mongo.repo
-VALIDATE $? "Copying mongodb repo to the repository directory"
+#MONGODB SETUP
+echo "Copy MONGO.repo file to the repository directory"
+cp $SCRIP_PATH/mongo.repo /etc/yum.repos.d/mongo.repo
+VALIDATE $? "Copying the repository file"
 
+echo "Installing the MONGODB"
 dnf install mongodb-org -y &>>$LOG_FILE
-VALIDATE $? "Installing mongodb"
+VALIDATE $? "Installation of MONGODB"
 
-systemctl enable mongod &>>$LOG_FILE
-VALIDATE $? "Enabling mongodb"
+echo "Enable and start the mongodb instance"
+systemctl enable mongod 
+VALIDATE $? "Enabling MONGODB"
 
-systemctl start mongod &>>$LOG_FILE
-VALIDATE $? "Starting mongodb"
+systemctl start mongod
+VALIDATE $? "Started MONGODB"
 
-sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mongod.conf
-VALIDATE $? "Updating the IP of mongodb"
+#Update the mongod.conf file to open the port 
 
-systemctl restart mongod &>>$LOG_FILE
-VALIDATE $? "Restarting mongodb"
+sed -i 's/127.0.0.0/0.0.0.0/g' /etc/mongod.conf
+VALIDATE $? "Updated the port in conf file"
+
+systemctl restart mongod
+VALIDATE $? "Restarted MONGODB"
+
+END_TIME=$(date +%s)
+echo "Script Completed at:$(date)"
+TOTAL_TIME=$(($END_TIME-$START_TIME))
+echo "Total Time Taken:$TOTAl_TIME"
+
+
