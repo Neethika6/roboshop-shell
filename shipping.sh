@@ -73,14 +73,22 @@ VALIDATE $? "Enabling and starting shipping"
 dnf install mysql -y &>>$LOG_FILE
 VALIDATE $? "Installing mysql client"
 
-mysql --host mysql.devopshyn.fun -uroot -p$ROOT_PASSWORD < /app/db/schema.sql &>>$LOG_FILE
-VALIDATE $? "Loading Schema"
+mysql -u "$MYSQL_USER" -p"$MYSQL_PASSWORD" -e "use cities;"
 
-mysql --host mysql.devopshyn.fun -uroot -p$ROOT_PASSWORD < /app/db/app-user.sql &>>$LOG_FILE
-VALIDATE $? "Loading App-user"
+if [ $? != 0 ]
+then
 
-mysql --host mysql.devopshyn.fun -uroot -p$ROOT_PASSWORD < /app/db/master-data.sql &>>$LOG_FILE
-VALIDATE $? "Loading master data"
+    mysql --host mysql.devopshyn.fun -uroot -p$ROOT_PASSWORD < /app/db/schema.sql &>>$LOG_FILE
+    VALIDATE $? "Loading Schema"
+
+    mysql --host mysql.devopshyn.fun -uroot -p$ROOT_PASSWORD < /app/db/app-user.sql &>>$LOG_FILE
+    VALIDATE $? "Loading App-user"
+
+    mysql --host mysql.devopshyn.fun -uroot -p$ROOT_PASSWORD < /app/db/master-data.sql &>>$LOG_FILE
+    VALIDATE $? "Loading master data"
+else
+    echo "data is already loaded"
+fi
 
 systemctl restart shipping
 VALIDATE $? "Shipping restart"
