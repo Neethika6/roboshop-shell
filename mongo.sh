@@ -59,6 +59,7 @@ VALIDATE $? "Restarted MONGODB"
 END_TIME=$(date +%s)
 echo "Script Completed at:$(date)"
 TOTAL_TIME=$(($END_TIME - $START_TIME))
+echo "TOTAL_TIME"
 echo "Total Time Taken:$TOTAl_TIME in seconds"
 
 
