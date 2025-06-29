@@ -73,7 +73,7 @@ VALIDATE $? "Enabling and starting shipping"
 dnf install mysql -y &>>$LOG_FILE
 VALIDATE $? "Installing mysql client"
 
-mysql -u "$MYSQL_USER" -p"$MYSQL_PASSWORD" -e "use cities;"
+mysql -u root -p$ROOT_PASSWORD -e "use cities;"
 
 if [ $? != 0 ]
 then
