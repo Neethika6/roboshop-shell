@@ -34,7 +34,7 @@ VALIDATE()
 
 #dispatch setup
 
-dnf install golang -y
+dnf install golang -y &>>$LOG_FILE
 VALIDATE $? "Installing GO"
 
 id roboshop
@@ -49,11 +49,11 @@ fi
 mkdir -p /app
 cd /app
 rm -rf *
-curl -o /tmp/dispatch.zip https://roboshop-artifacts.s3.amazonaws.com/dispatch-v3.zip 
+curl -o /tmp/dispatch.zip https://roboshop-artifacts.s3.amazonaws.com/dispatch-v3.zip &>>$LOG_FILE
 unzip /tmp/dispatch.zip
 VALIDATE $? "Unzipping dispatch zip"
 
-go mod init dispatch
+go mod init dispatch 
 go get 
 go build
 VALIDATE $? "Installing dependencies"
