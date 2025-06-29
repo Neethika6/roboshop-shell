@@ -56,6 +56,7 @@ fi
 
 mkdir -p /app
 cd /app
+rm -rf *
 curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip
 unzip /tmp/catalogue.zip
 VALIDATE $? "Copying and unzipping the catalogue file"
